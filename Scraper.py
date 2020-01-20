@@ -1,8 +1,5 @@
 from bs4 import BeautifulSoup
-from Model.Entry import Entry
-import settings
 import requests
-import view
 
 def scrap():
     url = 'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/submit-profile/rounds-invitations/results-previous.html'
@@ -10,7 +7,7 @@ def scrap():
     soup = BeautifulSoup(page.text, 'html.parser')
     rounds_of_invitations = soup.find(class_='mwsgeneric-base-html parbase section')
 
-    # data = []
+    data = []
     score_list = []
     number_of_invitations_issued = []
 
@@ -49,12 +46,15 @@ def scrap():
             invitations = no_of_invitations
         )
 
-        settings.local_database.append(item)
-
-        # data.append({
-        #     'month': month,
-        #     'date': day,
-        #     'year': year,
-        #     'score': score,
-        #     'no_of_invitations_issued' : no_of_invitations
-        # })
+        data.append({
+            'month': month,
+            'date': day,
+            'year': year,
+            'score': score,
+            'no_of_invitations_issued' : no_of_invitations
+        })
+        
+    return data
+        
+scraped_data = scrap()
+print("Data Scraped - ", scraped_data)
